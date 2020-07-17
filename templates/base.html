@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>STATISTICS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script src="https://use.fontawesome.com/c5350499dc.js"></script>
+    {% load static %}
+    <link rel="icon" href="{% static "/img/101131327_944476156005593_7311033385839755264_n.png" %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static "/css/styles.css" %}"">
+</head>
+
+<body>
+    <div style=" min-height: 100%">
+    <div style="margin-top: 20px;text-align: center;">
+        <div><img src="{% static "/img/101131327_944476156005593_7311033385839755264_n.png" %}" alt="logo"
+                style="width: 150px; height: 150px;"></div>
+        <div style="margin-top: 30px;text-align: center;">
+            <div style="font-size: 20px; color: white;-webkit-text-stroke: 1px rgb(247, 226, 226);"><strong> ĐẠI HỌC THỦ
+                    DẦU MỘT</strong></div>
+            <div style="font-size: 20px; color: white;-webkit-text-stroke: 1px rgb(247, 226, 226);">KHOA KỸ THUẬT - CÔNG
+                NGHỆ</div>
+            <br><br>
+            <div style="font-size: 28px; color: white;-webkit-text-stroke: 1px rgb(247, 226, 226);">PHÂN TÍCH TRỰC QUAN
+                HÓA DỮ LIỆU TUYỂN SINH ĐẠI HỌC THỦ DẦU MỘT</div>
+            <div style="font-size: 20px; color: white;-webkit-text-stroke: 1px rgb(247, 226, 226);">
+                SVTH: Nguyễn Thanh Huế</div>
+            <div style="font-size: 20px; color: white;-webkit-text-stroke: 1px rgb(247, 226, 226);">
+                LỚP: K1.B18HT101</div>
+            <div style="font-size: 20px; color: white;-webkit-text-stroke: 1px rgb(247, 226, 226);">
+                GVHD: Tiến sĩ Bùi Thanh Hùng</div>
+        </div>
+    </div>
+    <div style="margin-top:30px;margin-bottom: 30px">
+        <div style="display: flex;justify-content: center;align-items: center;">
+            <button class="button" onclick="document.getElementById('id01').style.display='block'"
+                style="margin: 50px"><i class="fa fa-bar-chart" aria-hidden="true"></i><br>Phân tích</button>
+            <button class="button" onclick="document.getElementById('id02').style.display='block'"
+                style="margin: 50px"><i class="fa fa-star" aria-hidden="true"></i><br>Dự đoán</button>
+            <button class="button" onclick="document.getElementById('id03').style.display='block'"
+                style="margin: 50px"><i class="fa fa-random" aria-hidden="true"></i><br>Tương quan</button>
+        </div>
+    </div>
+    <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+    <a href="#bottom"><button id="myBtn1" title="Go to bottom">Bot</button></a>
+    </div>
+    <!-- Top menu -->
+    <!-- <div class="w3-top">
+        <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto">
+            <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+            <div class="w3-right w3-padding-16"></div>
+            <div class="w3-center w3-padding-16">STATISTICS</div>
+        </div>
+    </div> -->
+    <!-- !PAGE CONTENT! -->
+    <div id="id01" class="w3-modal">
+        <div class="w3-modal-content w3-animate-zoom w3-card-4" style="width: 450px; border-radius: 20px;">
+            <header class="w3-container w3-teal" style="width: 450px; border-radius: 0 20px;">
+                <span onclick="document.getElementById('id01').style.display='none'"
+                    class="w3-button w3-display-topright">&times;</span>
+                <h2>Chọn các đối tượng phân tích</h2>
+            </header>
+            <div class="w3-container" style="width: 450px; border-radius: 20px;">
+                <label for="year" style="font-size: 17px;">Năm:</label>
+                <br>
+                <select id="year" style="width: 400px">
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                </select>
+                <br>
+                <label for="he" style="font-size: 17px;">Chọn hệ:</label>
+                <br>
+                <select id="he" style="width: 400px">
+                    <option value="CQ">Chính quy</option>
+                    <option value="TXDot1">Thường xuyên đợt 1</option>
+                    <option value="TXDot2">Thường xuyên đợt 2</option>
+                </select>
+                <br>
+                <label for="nganh" style="font-size: 17px;">Chọn ngành:</label>
+                <br>
+                <select id="nganh" style="width: 400px">
+                </select>
+                <br>
+                <div style="text-align: center;"><a href="#main"
+                        onclick="document.getElementById('id01').style.display='none'"><button onclick="chartfilter()"
+                            class="button">Hiển thị</button></a></div>
+
+            </div>
+        </div>
+    </div>
+    <div id="id02" class="w3-modal">
+        <div class="w3-modal-content w3-animate-zoom w3-card-4" style="width: 450px; border-radius: 20px;">
+            <header class="w3-container w3-teal" style="width: 450px; border-radius: 0 20px;">
+                <span onclick="document.getElementById('id02').style.display='none'"
+                    class="w3-button w3-display-topright">&times;</span>
+                <h2>Chọn các đối tượng dự đoán</h2>
+            </header>
+            <div class="w3-container" style="width: 450px; border-radius: 20px;">
+                <label for="year-dudoan" style="font-size: 17px;">Năm:</label>
+                <br>
+                <select id="year-dudoan" style="width: 400px">
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                </select>
+                <br>
+                <label for="he-dudoan" style="font-size: 17px;">Chọn hệ:</label>
+                <br>
+                <select id="he-dudoan" style="width: 400px">
+                    <option value="CQ">Chính quy</option>
+                    <option value="TXDot1">Thường xuyên đợt 1</option>
+                    <option value="TXDot2">Thường xuyên đợt 2</option>
+                </select>
+                <br>
+                <div style="text-align: center;"><a href="#main"
+                        onclick="document.getElementById('id02').style.display='none'"><button
+                            onclick="chartfilter('dudoan')" class="button">Hiển thị</button></a></div>
+
+            </div>
+        </div>
+    </div>
+    <div id="id03" class="w3-modal">
+        <div class="w3-modal-content w3-animate-zoom w3-card-4" style="width: 450px; border-radius: 20px;">
+            <header class="w3-container w3-teal" style="width: 450px; border-radius: 0 20px;">
+                <span onclick="document.getElementById('id03').style.display='none'"
+                    class="w3-button w3-display-topright">&times;</span>
+                <h2>Chọn các đối tượng tương quan</h2>
+            </header>
+            <div class="w3-container" style="width: 450px; border-radius: 20px;">
+                <label for="year-tuongquan" style="font-size: 17px;">Năm:</label>
+                <br>
+                <select id="year-tuongquan" style="width: 400px">
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                </select>
+                <br>
+                <label for="he-tuongquan" style="font-size: 17px;">Chọn hệ:</label>
+                <br>
+                <select id="he-tuongquan" style="width: 400px">
+                    <option value="CQ">Chính quy</option>
+                    <option value="TXDot1">Thường xuyên đợt 1</option>
+                    <option value="TXDot2">Thường xuyên đợt 2</option>
+                </select>
+                <br>
+                <div style="text-align: center;"><a href="#main"
+                    onclick="document.getElementById('id03').style.display='none'"><button onclick="chartfilter('tuongquan')"
+                        class="button">Hiển thị</button></a></div>
+
+            </div>
+        </div>
+    </div>
+    <br id="main">
+    <div class="w3-main w3-content w3-padding configchart" style="max-width:1200px">
+            <div style="text-align: center; font-size: 25px;"  id="label-dudoan"></div>
+        <!-- 2017 CQ -->
+        <div style="margin-top:30px;margin-bottom: 30px" class="excel">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <div id="excel"></div>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="tablenganh">
+            <div style="display: flex;justify-content: center;align-items: center;min-height: 83vh">
+                <table id="tablenganh"></table>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 CQ">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-diem-2017-CQ" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-diem-2017-CQ" class="nam2017 CQ"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 CQ">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-chitieu-trungtuyen-2017-CQ" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-chitieu-trungtuyen-2017-CQ" class="nam2017 CQ"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 CQ">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-chitieu-2017-CQ" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2017 CQ">
+            <div id='heatmap-chitieu-2017-CQ' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 CQ">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-diem-2017-CQ" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2017 CQ">
+            <div id='heatmap-diem-2017-CQ' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 CQ">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-trungtuyen-2017-CQ" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2017 CQ">
+            <div id='heatmap-trungtuyen-2017-CQ' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 CQ-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="scatter-diem-trungtuyen-chitieu-2017-CQ" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 CQ-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <div id="pearson-spearman-diem-trungtuyen-chitieu-2017-CQ"></div>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 CQ-dudoan">
+            <div style="display: flex;justify-content: center;align-items: center; min-height: 81vh">
+                <div
+                    style="border: solid; border-radius: 20px; background-color: aliceblue;border-color: aliceblue; padding: 15px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                    Nhập số lượng chỉ tiêu: <br><input type="number" class="inputnumber-chitieu-2017-CQ"><br>
+                    <span id="result-chitieu-2017-CQ"></span><br>
+                    <button class="button" style="padding: 5px;" onclick="calculate('chitieu-2017-CQ')">Tính</button>
+                    <br>
+                    Nhập số lượng trúng tuyển: <br><input type="number" class="inputnumber-trungtuyen-2017-CQ"><br>
+                    <span id="result-trungtuyen-2017-CQ"></span><br>
+                    <button class="button" style="padding: 5px;" onclick="calculate('trungtuyen-2017-CQ')">Tính</button>
+                </div>
+            </div>
+        </div>
+        <!-- 2017 TXDot1 -->
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot1">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-diem-2017-TXDot1" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-diem-2017-TXDot1" class="nam2017 TXDot1"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot1">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-soluong-2017-TXDot1" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-soluong-2017-TXDot1" class="nam2017 TXDot1"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot1">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-diem-2017-TXDot1" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2017 TXDot1">
+            <div id='heatmap-diem-2017-TXDot1' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot1">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-soluong-2017-TXDot1" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2017 TXDot1">
+            <div id='heatmap-soluong-2017-TXDot1' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot1-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="scatter-diem-soluong-2017-TXDot1" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot1-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <div id="pearson-spearman-diem-soluong-2017-TXDot1"></div>
+            </div>
+        </div>
+
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot1-dudoan">
+            <div style="display: flex;justify-content: center;align-items: center;min-height: 81vh">
+                <div
+                    style="border: solid; border-radius: 20px; background-color: aliceblue;border-color: aliceblue; padding: 15px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                    Nhập số lượng đăng kí: <br><input type="number" class="inputnumber-2017-TXDot1"><br>
+                    <span id="result-2017-TXDot1"></span><br>
+                    <button class="button" style="padding: 5px;" onclick="calculate('2017-TXDot1')">Tính</button><br>
+                </div>
+            </div>
+        </div>
+        <!-- 2017 TXDot2 -->
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot2">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-diem-2017-TXDot2" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-diem-2017-TXDot2" class="nam2017 TXDot2"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot2">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-soluong-2017-TXDot2" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-soluong-2017-TXDot2" class="nam2017 TXDot2"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot2">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-diem-2017-TXDot2" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2017 TXDot2">
+            <div id='heatmap-diem-2017-TXDot2' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot2">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-soluong-2017-TXDot2" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2017 TXDot2">
+            <div id='heatmap-soluong-2017-TXDot2' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot2-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="scatter-diem-soluong-2017-TXDot2" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot2-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <div id="pearson-spearman-diem-soluong-2017-TXDot2"></div>
+            </div>
+        </div>
+
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2017 TXDot2-dudoan">
+            <div style="display: flex;justify-content: center;align-items: center;min-height: 81vh">
+                <div
+                    style="border: solid; border-radius: 20px; background-color: aliceblue;border-color: aliceblue; padding: 15px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                    Nhập số lượng đăng kí: <br><input type="number" class="inputnumber-2017-TXDot2"><br>
+                    <span id="result-2017-TXDot2"></span><br>
+                    <button class="button" style="padding: 5px;" onclick="calculate('2017-TXDot2')">Tính</button><br>
+                </div>
+            </div>
+        </div>
+        <!-- 2018 CQ -->
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQ">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-diem-2018-CQ" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-diem-2018-CQ" class="nam2018 CQ"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQ">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-chitieu-trungtuyen-2018-CQ" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-chitieu-trungtuyen-2018-CQ" class="nam2018 CQ"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQ">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-diem-2018-CQ" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 CQ">
+            <div id='heatmap-diem-2018-CQ' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQ">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-trungtuyen-2018-CQ" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 CQ">
+            <div id='heatmap-trungtuyen-2018-CQ' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQ">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-chitieu-2018-CQ" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 CQ">
+            <div id='heatmap-chitieu-2018-CQ' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQ-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="scatter-diem-trungtuyen-chitieu-2018-CQ" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQ-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <div id="pearson-spearman-diem-trungtuyen-chitieu-2018-CQ"></div>
+            </div>
+        </div>
+
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQ-dudoan">
+            <div style="display: flex;justify-content: center;align-items: center;min-height: 81vh">
+                <div
+                    style="border: solid; border-radius: 20px; background-color: aliceblue;border-color: aliceblue; padding: 15px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                    Nhập số lượng chỉ tiêu: <br><input type="number" class="inputnumber-chitieu-2018-CQ"><br>
+                    <span id="result-chitieu-2018-CQ"></span><br>
+                    <button class="button" style="padding: 5px;"
+                        onclick="calculate('chitieu-2018-CQ')">Tính</button><br>
+                    Nhập số lượng trúng tuyển: <br><input type="number" class="inputnumber-trungtuyen-2018-CQ"><br>
+                    <span id="result-trungtuyen-2018-CQ"></span><br>
+                    <button class="button" style="padding: 5px;"
+                        onclick="calculate('trungtuyen-2018-CQ')">Tính</button><br>
+                </div>
+            </div>
+        </div>
+        <!-- 2018 CQsoluong -->
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQsoluong">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-2018-CQsoluong" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-2018-CQsoluong" class="nam2018 CQsoluong"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQsoluong">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-chitieu-2018-CQsoluong" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 CQsoluong">
+            <div id='heatmap-chitieu-2018-CQsoluong' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQsoluong">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-dangky-2018-CQsoluong" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 CQsoluong">
+            <div id='heatmap-dangky-2018-CQsoluong' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQsoluong">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-dangkyNV1-2018-CQsoluong" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 CQsoluong">
+            <div id='heatmap-dangkyNV1-2018-CQsoluong' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQsoluong">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-trungtuyen-2018-CQsoluong" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 CQsoluong">
+            <div id='heatmap-trungtuyen-2018-CQsoluong' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQsoluong">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-nhaphoc-2018-CQsoluong" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 CQsoluong">
+            <div id='heatmap-nhaphoc-2018-CQsoluong' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQsoluong-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="scatter-chitieu-nhaphoc-2018-CQsoluong" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQsoluong-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <div id="pearson-spearman-chitieu-nhaphoc-2018-CQsoluong"></div>
+            </div>
+        </div>
+
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQsoluong-dudoan">
+            <div style="display: flex;justify-content: center;align-items: center;min-height: 81vh">
+                <div
+                    style="border: solid; border-radius: 20px; background-color: aliceblue;border-color: aliceblue; padding: 15px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                    Nhập số lượng đăng kí: <br><input type="number" class="inputnumber-2018-CQsoluong"><br>
+                    <span id="result-2018-CQsoluong"></span><br>
+                    <button class="button" style="padding: 5px;" onclick="calculate('2018-CQsoluong')">Tính</button><br>
+                </div>
+            </div>
+        </div>
+        <!-- 2018 CQtheotinh -->
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQtheotinh">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-2018-CQtheotinh" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-2018-CQtheotinh" class="nam2018 CQtheotinh"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQtheotinh">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-soluong-2018-CQtheotinh" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 CQtheotinh">
+            <div id='heatmap-soluong-2018-CQtheotinh' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQtheotinh">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-dot1-2018-CQtheotinh" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 CQtheotinh">
+            <div id='heatmap-dot1-2018-CQtheotinh' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQtheotinh">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-dot2-2018-CQtheotinh" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 CQtheotinh">
+            <div id='heatmap-dot2-2018-CQtheotinh' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQtheotinh">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-nhaphoc-2018-CQtheotinh" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 CQtheotinh">
+            <div id='heatmap-nhaphoc-2018-CQtheotinh' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQtheotinh-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="scatter-soluong-nhaphoc-2018-CQtheotinh" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQtheotinh-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <div id="pearson-spearman-soluong-nhaphoc-2018-CQtheotinh"></div>
+            </div>
+        </div>
+
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 CQtheotinh-dudoan">
+            <div style="display: flex;justify-content: center;align-items: center;min-height: 81vh">
+                <div
+                    style="border: solid; border-radius: 20px; background-color: aliceblue;border-color: aliceblue; padding: 15px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                    Nhập số lượng đăng kí: <br><input type="number" class="inputnumber-2018-CQtheotinh"><br>
+                    <span id="result-2018-CQtheotinh"></span><br>
+                    <button class="button" style="padding: 5px;"
+                        onclick="calculate('2018-CQtheotinh')">Tính</button><br>
+                </div>
+            </div>
+        </div>
+        <!-- 2018 thacsi -->
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 thacsi">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-duthi-trungtuyen-2018-thacsi" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-duthi-trungtuyen-2018-thacsi" class="nam2018 thacsi"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 thacsi">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-duthi-2018-thacsi" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 thacsi">
+            <div id='heatmap-duthi-2018-thacsi' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 thacsi">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-trungtuyen-2018-thacsi" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 thacsi">
+            <div id='heatmap-trungtuyen-2018-thacsi' class="zingchart"></div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 thacsi-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="scatter-duthi-trungtuyen-2018-thacsi" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 thacsi-tuongquan">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <div id="pearson-spearman-duthi-trungtuyen-2018-thacsi"></div>
+            </div>
+        </div>
+
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 thacsi-dudoan">
+            <div style="display: flex;justify-content: center;align-items: center;min-height: 81vh">
+                <div
+                    style="border: solid; border-radius: 20px; background-color: aliceblue;border-color: aliceblue; padding: 15px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                    Nhập số lượng đăng kí: <br><input type="number" class="inputnumber-2018-thacsi"><br>
+                    <span id="result-2018-thacsi"></span><br>
+                    <button class="button" style="padding: 5px;" onclick="calculate('2018-thacsi')">Tính</button><br>
+                </div>
+            </div>
+        </div>
+        <!-- 2018 TX -->
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 TX">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-soluong-2018-TX" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-soluong-2018-TX" class="nam2018 TX"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 TX">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-soluong-2018-TX" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 TX">
+            <div id='heatmap-soluong-2018-TX' class="zingchart"></div>
+        </div>
+
+        <!-- 2018 TXDot1 -->
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 TXDot1">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-soluong-2018-TXDot1" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-soluong-2018-TXDot1" class="nam2018 TXDot1"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 TXDot1">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-soluong-2018-TXDot1" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 TXDot1">
+            <div id='heatmap-soluong-2018-TXDot1' class="zingchart"></div>
+        </div>
+
+        <!-- 2018 TXDot2 -->
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 TXDot2">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="sta-soluong-2018-TXDot2" width="1000"></canvas>
+            </div>
+        </div>
+        <div id="table-soluong-2018-TXDot2" class="nam2018 TXDot2"></div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="nam2018 TXDot2">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <canvas id="pie-soluong-2018-TXDot2" width="1000"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:30px;margin-bottom: 30px" class="zingchart0 nam2018 TXDot2">
+            <div id='heatmap-soluong-2018-TXDot2' class="zingchart"></div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+        <div id="mytable"></div>
+        <div id="excelsheet1"></div>
+
+        <!--  -->
+        <!-- END TINH SHEET -->
+    </div>
+    <br id="bottom">
+    {% load static %}
+    <script type="text/javascript" src="{% static "/js/process.js" %}"></script>
+    </body>
+
+</html>
